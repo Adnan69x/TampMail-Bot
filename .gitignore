@@ -1,0 +1,25 @@
+# Python
+*.pyc
+__pycache__/
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# macOS
+.DS_Store
+
+# IDEs
+.idea/
+.vscode/
+
+# Logs and databases
+*.log
+*.sqlite3
+
+# Compiled Python files
+*.pyc
+
+# Docker
+.dockerignore
