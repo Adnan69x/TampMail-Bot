@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir aiogram requests beautifulsoup4
 EXPOSE 8080
 
 # Run the bot when the container launches
-CMD ["python", "TampMail-Bot.py"]
+CMD ["python", "tempmail.py"]
