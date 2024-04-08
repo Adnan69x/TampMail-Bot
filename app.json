@@ -17,7 +17,7 @@
     }
   ],
   "scripts": {
-    "start": "python your_bot_script.py"
+    "start": "python tempmail.py"
   },
   "formation": {
     "web": {
