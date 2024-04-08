@@ -11,8 +11,13 @@
     }
   },
   "addons": [],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
   "scripts": {
-    "start": "python tempmail.py"
+    "start": "python your_bot_script.py"
   },
   "formation": {
     "web": {
