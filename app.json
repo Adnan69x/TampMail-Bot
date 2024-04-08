@@ -16,9 +16,6 @@
       "url": "heroku/python"
     }
 ],
-    {
-      "url": "https://github.com/jonathAdnang/heroku-buildpack-ffmpeg-latest.git"
-      }
 {
       "stack": "container"
   }
