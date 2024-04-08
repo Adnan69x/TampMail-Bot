@@ -16,9 +16,6 @@
       "url": "heroku/python"
     }
 ],
-{
-      "stack": "container"
-  }
   "scripts": {
     "start": "python tempmail.py"
   },
