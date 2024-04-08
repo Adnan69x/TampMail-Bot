@@ -1,0 +1,14 @@
+{
+  "name": "TempMail-Bot",
+  "description": "Description of your bot",
+  "repository": "https://github.com/Adnan69x/TampMail-Bot",
+  "keywords": ["telegram", "bot"],
+  "image": "heroku/python",
+  "addons": [],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "stack": "container"
+}
