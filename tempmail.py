@@ -1,6 +1,3 @@
-# Author (C) @theSmartBisnu
-# Channel : https://t.me/itsSmartDev
-
 import re
 import requests
 import random
@@ -8,24 +5,15 @@ import string
 from bs4 import BeautifulSoup
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+import config  # Import the configuration file
 
-# Initialize the bot and dispatcher
-API_TOKEN = '123456:ABCDEFGHIJLLJOdMttZ5hEZ78'  # Change the token with your bot token
-bot = Bot(token=API_TOKEN)
+# Initialize the bot and dispatcher with the API token from config.py
+bot = Bot(token=config.API_TOKEN)
 dp = Dispatcher(bot)
 
-# Dictionary to store user request data
+# Dictionary to store user request data and tokens
 user_data = {}
-
-#For Mail Read Funtion
 user_tokens = {}
-MAX_MESSAGE_LENGTH = 4000
-
-BASE_URL = "https://api.mail.tm"
-HEADERS = {
-    "Content-Type": "application/json",
-    "Accept": "application/json"
-}
 
 def generate_random_username(length=8):
     return ''.join(random.choice(string.ascii_lowercase) for i in range(length))
@@ -35,7 +23,7 @@ def generate_random_password(length=12):
     return ''.join(random.choice(characters) for i in range(length))
 
 def get_domain():
-    response = requests.get(f"{BASE_URL}/domains", headers=HEADERS)
+    response = requests.get(f"{config.BASE_URL}/domains", headers=config.HEADERS)
     data = response.json()
     if isinstance(data, list) and data:
         return data[0]['domain']
@@ -44,70 +32,34 @@ def get_domain():
     return None
 
 def create_account(email, password):
-    data = {
-        "address": email,
-        "password": password
-    }
-    response = requests.post(f"{BASE_URL}/accounts", headers=HEADERS, json=data)
-    if response.status_code in [200, 201]:
-        return response.json()
-    else:
-        print(f"Error Code: {response.status_code}")
-        print(f"Response: {response.text}")
-        return None
+    data = {"address": email, "password": password}
+    response = requests.post(f"{config.BASE_URL}/accounts", headers=config.HEADERS, json=data)
+    return response.json() if response.ok else None
 
 def get_token(email, password):
-    data = {
-        "address": email,
-        "password": password
-    }
-    response = requests.post(f"{BASE_URL}/token", headers=HEADERS, json=data)
-    if response.status_code == 200:
-        return response.json().get('token')
-    else:
-        print(f"Token Error Code: {response.status_code}")
-        print(f"Token Response: {response.text}")
-        return None
-
+    data = {"address": email, "password": password}
+    response = requests.post(f"{config.BASE_URL}/token", headers=config.HEADERS, json=data)
+    return response.json().get('token') if response.ok else None
 
 def get_text_from_html(html_content_list):
-    html_content = ''.join(html_content_list)
-    soup = BeautifulSoup(html_content, 'html.parser')
-    
-    # Extract URLs from anchor tags and append them to the anchor text
+    soup = BeautifulSoup(''.join(html_content_list), 'html.parser')
     for a_tag in soup.find_all('a', href=True):
-        url = a_tag['href']
-        new_content = f"{a_tag.text} [{url}]"
-        a_tag.string = new_content
-
-    text_content = soup.get_text()
-    cleaned_content = re.sub(r'\s+', ' ', text_content).strip()
-    return cleaned_content
-
+        a_tag.string = f"{a_tag.text} [{a_tag['href']}]"
+    return re.sub(r'\s+', ' ', soup.get_text()).strip()
 
 def list_messages(token):
-    headers = {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "Authorization": f"Bearer {token}"
-    }
-    response = requests.get(f"{BASE_URL}/messages", headers=headers)
+    headers = {**config.HEADERS, "Authorization": f"Bearer {token}"}
+    response = requests.get(f"{config.BASE_URL}/messages", headers=headers)
     data = response.json()
-    if isinstance(data, list):
-        return data
-    elif 'hydra:member' in data:
-        return data['hydra:member']
-    else:
-        return []
+    return data if isinstance(data, list) else data.get('hydra:member', [])
 
-
-@dp.message_handler(commands=['tmail'])    #You Can chnage the tmail command
+@dp.message_handler(commands=['tmail'])    # You Can change the tmail command
 async def generate_mail(message: types.Message):
     # Check if the chat type is not private
     if message.chat.type != 'private':
         await bot.send_message(message.chat.id, "<b>❌ Bro TempMail Feature Only Work In Privately, Because This is Private things.</b>", parse_mode="html")
         return
-        
+
     if not message.text.startswith(('/tmail', '.tmail')):
         return
 
@@ -172,10 +124,10 @@ async def generate_mail(message: types.Message):
 
     # Delete the loading message
     await bot.delete_message(chat_id=message.chat.id, message_id=loading_msg.message_id)
-    
-    
-    
-@dp.message_handler(commands=['cmail']) #You Can chnage the cmail command
+
+
+
+@dp.message_handler(commands=['cmail']) # You Can change the cmail command
 async def check_mail(message: types.Message):
     # Check if the chat type is not private
     if message.chat.type != 'private':
