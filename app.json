@@ -1,28 +1,37 @@
 {
-  "name": "TempMail-Bot",
-  "description": "A Telegram bot for generating temporary email addresses and checking emails.",
-  "repository": "https://github.com/Adnan69x/TampMail-Bot",
-  "keywords": ["Telegram", "bot", "email", "temporary"],
-  "image": "heroku/python",
-  "env": {
-    "API_TOKEN": {
-      "description": "",
-      "required": true
-    }
-  },
-  "addons": [],
-  "buildpacks": [
-    {
-      "url": "heroku/python"
-    }
-],
-  "scripts": {
-    "start": "python tempmail.py"
-  },
-  "formation": {
-    "web": {
-      "quantity": 1
-      "size": "eco"
-    }
-  }
+    "name": "TempMail-Bot",
+    "description": "A Telegram bot designed to handle various tasks with ease.",
+    "repository": "https://github.com/Adnan69x/TampMail-Bot",
+    "logo": "https://path.to/your/logo.png",
+    "keywords": [
+        "python",
+        "telegram",
+        "bot",
+        "automation"
+    ],
+    "scripts": {
+        "postdeploy": "python tempmail.py"
+    },
+    "env": {
+        "API_TOKEN": {
+            "description": "The API token for the Telegram Bot",
+            "required": true
+        }
+    },
+    "formation": {
+        "web": {
+            "quantity": 1,
+            "size": "free"
+        }
+    },
+    "addons": [
+        {
+            "plan": "heroku-redis"
+        }
+    ],
+    "buildpacks": [
+        {
+            "url": "heroku/python"
+        }
+    ]
 }
