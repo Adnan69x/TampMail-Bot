@@ -4,7 +4,6 @@ setup(
     name='TempMail-Tg',
     version='0.1.0',
     author='Bisnu Ray',
-    heroku deployed modified= 'Adnan69x',
     author_email='example@gmail.com',
     description='A simple Telegram bot for handling tasks.',
     long_description=open('README.md').read(),
