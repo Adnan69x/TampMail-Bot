@@ -1,3 +1,35 @@
+# Define the build and run configuration for Heroku
 build:
+  # Specify Docker as the build type
   docker:
+    # Define the Dockerfile path for the web process type
     web: Dockerfile
+
+# Specify the processes to run
+run:
+  web: python bot.py
+
+# Optionally, define the resources (like addons)
+resources:
+  addons:
+    - plan: heroku-postgresql
+      as: DATABASE
+
+# Define environment variables
+environments:
+  test:
+    config:
+      DEBUG: "true"
+  production:
+    config:
+      DEBUG: "false"
+
+# Include any necessary formation settings
+formation:
+  web:
+    quantity: 1
+    size: standard-1X
+
+# Optional settings for scaling and dynos
+# scale:
+#   web: standard-1X=1
