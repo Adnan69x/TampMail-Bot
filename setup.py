@@ -9,9 +9,4 @@ setup(
         'requests==2.28.1',
         'beautifulsoup4==4.11.1'
     ],
-    entry_points={
-        'console_scripts': [
-            'mytelegrambot = TempMail_Bot.main:main',
-        ],
-    }
 )
